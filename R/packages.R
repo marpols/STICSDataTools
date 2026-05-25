@@ -1,0 +1,20 @@
+packages <- c("roxygen2",
+              "stringr",
+              "dplyr",
+              "ggplot2",
+              "openxlsx",
+              "purrr",
+              "data.table",
+              "rlang")
+
+invisible(lapply(packages, function(p) {
+  if (!(p %in% installed.packages())) {
+    if (p == "SticsRPacks") {
+      devtools::install_github("SticsRPacks/SticsRPacks@*release")
+      devtools::install_github("SticsRPacks/CroPlotR@*release")
+    } else {
+      install.packages(p, character.only = T)
+    }
+  }
+  library(p, character.only = TRUE)
+}))
