@@ -5,13 +5,14 @@ join_dfs <- function(df_list,
                           by = by,
                           suffix = c("", ".y"),
                           keep = FALSE) |>
-    select(-matches("\\.y"))
+    dplyr::select(-matches("\\.y"))
 
 }
 
 #'@export
 df_to_list <- function(df, by = "file_name") {
 
+  org_class <- class(df)
   tbl_df <- dplyr::as_tibble(df)
 
   if (length(by) > 1) {
@@ -24,8 +25,10 @@ df_to_list <- function(df, by = "file_name") {
     names <- unique(df[[by]])
   }
   tryCatch({
-    df |> group_split(across(all_of(by))) |>
-      setNames(names)
+    df |> dplyr::group_split(across(all_of(by))) |>
+      purrr::set_names(names) |>
+      "class<-"(org_class)
+
   }, error = function(e){
     if (grepl("must be a list", e$message)) {
       message("`obj` is already a list")
@@ -38,8 +41,10 @@ df_to_list <- function(df, by = "file_name") {
 #'@export
 regroup_df_list <- function(df_list,
                             by = ""){
+  org_class <- class(df_list)
   df <- purrr::list_rbind(df_list)
-  df_to_list(df, by)
+  df_to_list(df, by) |>
+    "class<-"(org_class)
 }
 
 #'@export
