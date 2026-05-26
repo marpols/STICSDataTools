@@ -20,29 +20,28 @@
 
   func <- ifelse(negatives, gdd.default, gdd.max)
 
-  df <- df[df$mo %in% mo_range, ] |>
-    group_by(ian) |>
-    mutate(GDD = func(MinTemp, MaxTemp, base),
+  df[df$mo %in% mo_range, ] |>
+    dplyr::group_by(ian) |>
+    dplyr::mutate(GDD = func(MinTemp, MaxTemp, base),
            GDD_cum = cumsum(GDD)) |>
-    ungroup()
+    dplyr::ungroup()
 
-  return(df)
 }
 
+#'@export
 get_gdd <- function(df_list,
                     base = 5,
                     mo_range = NULL,
                     negatives = FALSE,
                     return_type = 0) {
-  return(
-    get_data(
-      calc_gdd,
-      df_list,
-      return_type,
-      base = base,
-      mo_range = mo_range,
-      negatives = negatives
-    )
+
+  get_data(
+    calc_gdd,
+    df_list,
+    return_type,
+    base = base,
+    mo_range = mo_range,
+    negatives = negatives
   )
 
 }

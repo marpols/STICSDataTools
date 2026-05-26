@@ -1,5 +1,6 @@
 #requires ggplot2
 
+#'@export
 plot_style <- function(plot,
                        plot_fs = NULL,
                        x_axis = 16,
@@ -12,7 +13,7 @@ plot_style <- function(plot,
                        angle = 45,
                        hjust = 1
 ){
-  plot <- plot +
+  plot +
     theme(
       plot.title = element_text(size = plot_fs),
       axis.title.x = element_text(size = x_axis),
@@ -24,25 +25,24 @@ plot_style <- function(plot,
       legend.position = legend_pos
     )
 
-  return(plot)
 }
 
+#'@export
 plot_labels <- function(plot,
                         title = "",
                         axis_title_x = "",
                         axis_title_y = "",
                         ...){
-  plot <- plot +
+  plot +
     labs(title = title,
       x = axis_title_x,
       y = axis_title_y,
       ...
       )
 
-  return(plot)
-
 }
 
+#'@export
 remove_legend <- function(plot,
                        type = c("fill", "colour", "linetype", "alpha")){
   lookup <- list(fill = "none",
@@ -50,49 +50,9 @@ remove_legend <- function(plot,
               linetype = "none",
               alpha = "none")
   args <- match.arg(type, several.ok = TRUE)
-  return(plot + guides(lookup[args]))
+
+  plot + guides(lookup[args])
 }
-
-save_plot <- function(plot,
-                      fname,
-                      outdir,
-                      ...){
-  UseMethod("save_plot")
-}
-
-save_plot.default <- function(plot,
-                      fname,
-                      outdir,
-                      width = 17,
-                      height = 19.5,
-                      unit = "cm"
-){
-  ggsave(filename = sprintf("%s.png", fname),
-         plot = plot,
-         path = outdir,
-         width = width,
-         height = height,
-         unit = unit)
-}
-
-save_plot.list <- function(plots,
-                           fnames,
-                           outdir,
-                           width = 17,
-                           height = 19.5,
-                           unit = "cm"){
-  if(length(fnames) == 1){
-
-  }
-  mapply(function(p,f){
-    save_plot.default(p,f,outdir,
-                      width = width,
-                      height = height,
-                      unit = unit)
-  },plots, fnames)
-}
-
-
 
 
 

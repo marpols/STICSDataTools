@@ -1,6 +1,7 @@
+#'@export
 plot_boxplot <- function(dataset,
                          variable,
-                         x_axis = "stn_code",
+                         x_axis = "stncode",
                          factors = character(),
                          title = character(),
                          axis_title_x = x_axis,
@@ -12,7 +13,7 @@ plot_boxplot <- function(dataset,
                            levels = factors)
   }
 
-  plot <- ggplot(dataset,
+  ggplot2::ggplot(dataset,
                  aes(x = .data[[x_axis]],
                      y = .data[[variable]])) +
     geom_boxplot(fill = colour) +
@@ -23,5 +24,4 @@ plot_boxplot <- function(dataset,
     ) +
     theme_minimal()
 
-  return(plot)
 }

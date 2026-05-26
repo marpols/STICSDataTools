@@ -1,34 +1,35 @@
 #requires ggplot2, rlang
-
+#'@export
 plot_climate <- function(dataset,
-                               hist_avg,
-                               variable,
-                               x_axis = "ian",
-                               filters = "",
-                               title = NULL,
-                               subtitle = NULL,
-                               color_values = c(low  = "red",
-                                                mid = "lightblue",
-                                                high = "blue"),
-                               axis_title_x = x_axis,
-                               axis_title_y = variable,
-                               y_min = 0){
+                         hist_avg = numeric(),
+                         variable = character(),
+                         x_axis = "ian",
+                         filters = "",
+                         title = NULL,
+                         subtitle = NULL,
+                         color_values = c(low  = "red",
+                                          mid = "lightblue",
+                                          high = "blue"),
+                         axis_title_x = x_axis,
+                         axis_title_y = variable,
+                         line_label = "20 year Average",
+                         y_min = 0){
 
-  subset <- dataset |> filter(!!!rlang::parse_exprs(filters))
+  subset <- dataset |> dplyr::filter(!!!rlang::parse_exprs(filters))
   max <- max(subset[[variable]])
-  mid <- hist_avg |> filter(!!!rlang::parse_exprs(filters)) |> select(2)
 
-  plot <- ggplot(subset, aes(x = .data[[x_axis]],
+  plot <- ggplot2::ggplot(subset, aes(x = .data[[x_axis]],
                               y = .data[[variable]],
                               fill = .data[[variable]])) +
     geom_col() +
     scale_fill_gradient2(color_values,
-                         midpoint = mid[[1]]) +
+                         midpoint = hist_avg) +
     geom_hline(yintercept = mid,
                linewidth = 0.8) +
     annotate("text",
              x = min(.data[[x_axis]]),
-             y = mid, label = "20 year Average",
+             y = mid,
+             label = line_label,
              hjust = 0.4,
              vjust = -0.5,
              color = "black",
@@ -50,10 +51,10 @@ plot_climate <- function(dataset,
 
   plot
 }
-
+#'@export
 plot_climate2 <- function(dataset,
-                                hist_avg,
-                                variable,
+                                hist_avg = numeric(),
+                                variable = character(),
                                 x_axis = "ian",
                                 filters = "",
                                 title = NULL,
@@ -67,14 +68,13 @@ plot_climate2 <- function(dataset,
 
   subset <- .filter_data(dataset, filters)
   max <- max(subset[[variable]])
-  mid <- .filter_data(hist_avg, filters) |> select(2)
 
   n_slices <- 200
 
   bar_slices <- subset |>
-    mutate(
+    dplyr::mutate(
       x = as.numeric(factor(subset[[x_axis]])),
-      ymax_bar = Precipitation_cum_avg,
+      ymax_bar = { variable },
       y_bottom = purrr::map(ymax_bar,
                             ~ seq(y_min, .x,
                                   length.out = n_slices + 1)[-length(seq(y_min,
@@ -90,7 +90,7 @@ plot_climate2 <- function(dataset,
       fill_y = (y_bottom + y_top) / 2
     )
 
-  plot <- ggplot(bar_slices) +
+  ggplot2::ggplot(bar_slices) +
     geom_rect(
       aes(
         xmin = x - 0.45,
@@ -115,7 +115,6 @@ plot_climate2 <- function(dataset,
     ) +
     theme_minimal()
 
-  return(plot)
 }
 
 

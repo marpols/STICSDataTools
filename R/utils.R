@@ -1,27 +1,31 @@
-join_dfs <- function(df_list, by = c("file_name", "ian", "jul")) {
-  df <- df_list |> reduce(left_join,
+#'@export
+join_dfs <- function(df_list,
+                     by = c("file_name", "ian", "jul")) {
+  df_list |> purrr::reduce(left_join,
                           by = by,
                           suffix = c("", ".y"),
                           keep = FALSE) |>
     select(-matches("\\.y"))
 
-  return(df)
-
 }
 
+#'@export
 df_to_list <- function(df, by = "file_name") {
 
   tbl_df <- as_tibble(df)
 
   if (length(by) > 1) {
     vars <- tbl_df[by] |> lapply(unique)
-    names <- tidyr::expand_grid(!!!vars) |> tidyr::unite("name", dplyr::everything(), sep = "_") |>
+    names <- tidyr::expand_grid(!!!vars) |> tidyr::unite("name",
+                                                         dplyr::everything(),
+                                                         sep = "_") |>
       dplyr::pull(name)
   } else {
     names <- unique(df[[by]])
   }
   tryCatch({
-    return(df |> group_split(across(all_of(by))) |> setNames(names))
+    df |> group_split(across(all_of(by))) |>
+      setNames(names)
   }, error = function(e){
     if (grepl("must be a list", e$message)) {
       message("`obj` is already a list")
@@ -31,17 +35,19 @@ df_to_list <- function(df, by = "file_name") {
 
 }
 
-regroup_df_list <- function(df_list, by = ""){
+#'@export
+regroup_df_list <- function(df_list,
+                            by = ""){
   df <- purrr::list_rbind(df_list)
-  return(df_to_list(df, by))
+  df_to_list(df, by)
 }
 
+#'@export
 df_list_to_df <- function(df_list){
   tryCatch({
-  return(purrr::list_rbind(df_list) |>
-           as.data.table() |>
+  purrr::list_rbind(df_list) |>
+      data.table::as.data.table() |>
            .restore_attrs(df_list, "list")
-           )
   }, error = function(e){
     if (grepl("must be a list", e$message)) {
       message("`obj` is already a data.frame or data.table")
@@ -50,27 +56,23 @@ df_list_to_df <- function(df_list){
   })
 }
 
-
-as.projection <- function(obj){
-  class(obj) <- c("projections",
-                  class(obj))
-  return(obj)
-}
-
+#'@export
 as.climate <- function(obj){
   class(obj) <- c("climate",
                   class(obj))
   return(obj)
 }
 
-as.simulations <- function(obj){
-  class(obj) <- c("simulations",
+#'@export
+as.cropr <- function(obj){
+  class(obj) <- c("cropr_simulation",
                   class(obj))
   return(obj)
 }
 
-as.STICSsimulations <- function(obj){
-  class(obj) <- c("STICS simulations",
+#'@export
+as.projections <- function(obj){
+  class(obj) <- c("projections",
                   class(obj))
   return(obj)
 }
@@ -92,8 +94,8 @@ as.STICSsimulations <- function(obj){
 
   exprs <- rlang::parse_exprs(filters)
 
-  return(dataset |>
-    dplyr::filter(!!!exprs))
+  dataset |>
+    dplyr::filter(!!!exprs)
 }
 
 

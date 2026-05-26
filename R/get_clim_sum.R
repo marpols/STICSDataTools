@@ -1,12 +1,7 @@
+#'@export
 get_clim_sum <- function(df,
-                         mo_range = 1:12,
-                         by = "") {
-  UseMethod("get_clim_sum")
-}
-
-get_clim_sum.default <- function(df,
                                  mo_range = 1:12,
-                                 by = c("stn_code", "ian")){
+                                 by = c("stncode", "ian")){
 
   df_sums <- .calc_clim_sums(df = df,
                             mo_range = mo_range,
@@ -14,19 +9,16 @@ get_clim_sum.default <- function(df,
     add_ids() |>
     summarise(Precipitation_cum_avg = mean(Precipitation_cum),
               GDD_cum_avg = mean(GDD_cum),
-              .by = by) |>
-    mutate(across(all_of(c('model', 'ssp', 'location'))), NA)
+              .by = by)
 
 
   df_means <- .calc_clim_means(df = df,
                               mo_range = mo_range,
                               by = by)
 
-  new_df <- join_dfs(list(df_means, df_sums), by) |>
+  join_dfs(list(df_means, df_sums), by) |>
     {\(x) structure(x,
                     file_type = "summary")}()
-
-  return(new_df)
 
 }
 
@@ -37,10 +29,9 @@ get_clim_sum.projections <- function(df,
                             mo_range = mo_range,
                             by = by) |>
     add_ids() |>
-    summarise(Precipitation_cum_avg = mean(Precipitation_cum),
+    dplyr::summarise(Precipitation_cum_avg = mean(Precipitation_cum),
               GDD_cum_avg = mean(GDD_cum),
-              .by = by) |>
-    mutate(stn_code = "P")
+              .by = by)
 
 
   df_means <- .calc_clim_means(df = df,
@@ -75,8 +66,8 @@ get_clim_sum.projections <- function(df,
   sum_by <- c("ian", "file_name", if ("mo" %in% by) "mo")
 
 
-  df_sums <- df[mo %in% mo_range, ] |>
-    summarise(
+  df[mo %in% mo_range, ] |>
+    dplyr::summarise(
       Precipitation_cum = sum(Precipitation, na.rm = TRUE),
       GDD_cum = sum(GDD, na.rm = TRUE),
       .by = sum_by
@@ -86,7 +77,6 @@ get_clim_sum.projections <- function(df,
                     source = "STICS",
                     file_type = "summary")}()
 
-  return(df_sums)
 }
 
 .calc_clim_means <- function(...) {
@@ -96,8 +86,8 @@ get_clim_sum.projections <- function(df,
   mo_range <- args[["mo_range"]]
   by <- args[["by"]]
 
-  df_means <- df[mo %in% mo_range, ] |>
-    summarise(
+  df[mo %in% mo_range, ] |>
+    dplyr::summarise(
       MinTemp_avg = mean(MinTemp, na.rm = TRUE),
       MaxTemp_avg = mean(MaxTemp, na.rm = TRUE),
       WindSpeed_avg = mean(WindSpeed, na.rm = TRUE),
@@ -110,7 +100,6 @@ get_clim_sum.projections <- function(df,
                     source = "STICS",
                     file_type = "summary")}()
 
-  return(df_means)
 }
 
 

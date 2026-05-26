@@ -1,14 +1,15 @@
+#'@export
 plot_projections <- function(dataset,
-                             variable,
+                             variable = character(),
                              title = NULL,
                              x_axis = "ian",
                              axis_title_x = x_axis,
                              axis_title_y = variable,
-                             grid_cols = "soil_code",
-                             grid_rows = "ssp"
-){
+                             grid_cols = "soilcode",
+                             grid_rows = "ssp") {
 
-  ggplot(dataset, aes(x = .data[[x_axis]])) +
+
+  ggplot2::ggplot(dataset, aes(x = .data[[x_axis]])) +
     geom_line(aes(y = .data[[variable]],
                   color = model)) +
     facet_grid(cols = vars(.data[[grid_cols]]),
@@ -22,16 +23,17 @@ plot_projections <- function(dataset,
 
 }
 
+#'@export
 plot_projections2 <- function(dataset,
-                              variable,
-                              title = NULL,
-                              subtitle = NULL,
+                              variable = character(),
+                              title = character(),
+                              subtitle = character(),
                               x_axis = "ian",
                               axis_title_x = x_axis,
                               axis_title_y = variable,
                               ribbon_group = "ssp",
-                              fill_group = "soil_code",
-                              grid_cols = "soil_code",
+                              fill_group = "soilcode",
+                              grid_cols = "soilcode",
                               grid_rows = "ssp",
                               y_range,
                               fill_values = c(ARY="#33A02C",
@@ -52,7 +54,7 @@ plot_projections2 <- function(dataset,
 ){
   #plots projection data over time with se ribbons (method = loess)
 
-  ggplot(dataset, aes(x = ian)) +
+  ggplot2::ggplot(dataset, aes(x = ian)) +
     geom_smooth(
       aes(y = .data[[variable]],
           group = .data[[ribbon_group]],

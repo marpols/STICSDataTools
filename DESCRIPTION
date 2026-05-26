@@ -1,16 +1,27 @@
 Package: STICSDataTools
 Type: Package
-Title: What the Package Does (Title Case)
+Title: A package for STICS simulation data manipulation and plot generation
 Version: 0.1.0
 Authors@R: c(
     person(
-      "Jane", "Doe",
-      email = "jane@example.com",
+      "Mariaelisa", "Polsinelli",
+      email = "mariaelisa.polsinelli@mail.mcgill.ca",
       role = c("aut", "cre")
     )
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
-License: What license is it under?
+  #> [1] "Mariaelisa Polsinelli <mariaelisa.polsinelli@mail.mcgill.ca> [aut, cre] (ORCID: <https://orcid.org/0000-0002-6983-2759>)"
+Description: A package for STICS simulation data manipulation and plot generation. 
+	Includes functions to read and organize STICS simulation and climate file data, calculate basic statitics such as parameter means, sums, and maximum values.
+	Also includes functions to calculate GDD and some plotting options to explore data.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports:
+	data.table,
+    dplyr,
+    ggplot2,
+    purrr,
+	rlang,
+	stringr,
+	tidyr
+Config/roxygen2/version: 8.0.0

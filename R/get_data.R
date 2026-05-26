@@ -22,7 +22,7 @@
     return(file_list)
   } else if (return_type == 1){
     return(purrr::list_rbind(file_list) |>
-             as.data.table() |>
+             data.table::as.data.table() |>
              .restore_attrs(df_list, "list"))
   }
 }
@@ -42,7 +42,7 @@
       message("To return as list, set grouping using 'by'")
     })
   } else if (return_type == 1){
-    return(summary |> as.data.table())
+    return(summary |> data.table::as.data.table())
   }
 
 }
@@ -113,6 +113,7 @@
   return(df_sum)
 }
 
+#'@export
 get_cum_var <- function(df_list,
                         var = "",
                         mo_range = 1:12,
@@ -126,6 +127,7 @@ get_cum_var <- function(df_list,
                    ...))
 }
 
+#'@export
 get_sum <- function(df_list,
                     var,
                     by,
@@ -141,6 +143,7 @@ get_sum <- function(df_list,
 
 }
 
+#'@export
 get_mean <- function(df_list,
                       var,
                       by,
@@ -156,6 +159,7 @@ get_mean <- function(df_list,
 
 }
 
+#'@export
 get_sum_mean <- function(df_list,
                          var,
                          mean_by,
@@ -181,6 +185,7 @@ get_sum_mean <- function(df_list,
   return(df_sum)
 }
 
+#'@export
 get_max <- function(df_list,
                     var,
                     by,
@@ -195,6 +200,7 @@ get_max <- function(df_list,
                    ...))
 }
 
+#'@export
 summarise_vars <- function(df_list,
                            var_list,
                            type = c("cum", "sum", "mean", "sum mean", "max"),
@@ -224,7 +230,7 @@ summarise_vars <- function(df_list,
   new_df <- lapply(var_list, function(var){
     do.call(func, c(list(df_list, var), args))
   }) |>
-    list_flatten(name_repair = "unique_quiet") |>
+    purrr::list_flatten(name_repair = "unique_quiet") |>
     join_dfs(by)
 
   return(new_df)

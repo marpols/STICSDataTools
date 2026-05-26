@@ -1,58 +1,53 @@
-add_ids <- function(df){
+#'@export
+add_ids <- function(df,
+                    format){
   UseMethod("add_ids")
 }
 
-add_ids.simulations <- function(df) {
+#'@export
+add_ids.default <- function(df,
+                            format){
 
-  projections <- "projections" %in% class(df)
+  names <- get_ids(format)
 
-  names <- if(projections){
-    c("model", "ssp", "ian", "stn_code", "soil_code", "ver_id")
-  } else {
-    c("location", "ian", "stn_code", "soil_code", "ver_id")
-  }
-
-  cols <- c("stn_code", "soil_code", "ver_id",
-            if ("model" %in% names) "model",
-            if ("ssp" %in% names) "ssp",
-            "ian")
-
-  df <- .add_ids_func(func = tidyr::separate_wider_delim,
-                       df = df,
-                       delim = "_",
-                       names = names) |>
-    relocate(all_of(cols)) |>
-    mutate(across("ian", as.integer))
-
-  return(df)
+  .add_ids_func(func = tidyr::separate_wider_delim,
+                      df = df,
+                      col = 'file_name',
+                      delim = "_",
+                      names = names) |>
+    dplyr::relocate(all_of(names)) |>
+    dplyr::relocate("ian", .before = "mo") |>
+    dplyr::mutate(across("ian", as.integer))
 
 }
 
-add_ids.climate <- function(df) {
-  if("projections" %in% class(df)){
-    df <- add_ids_func(func = tidyr::separate_wider_delim,
-                         df = df,
-                         names = c("model", "ssp", "location"),
-                         delim = "_")
-    df[,"stn_code"] <- "P"
-  } else {
-    df <- .add_ids_func(func = tidyr::separate_wider_regex,
-                         df = df,
-                         names = "stn_code",
-                         patterns = "^[[:upper:]]|(?<=_)[[:upper:]]")
-    df[,c("ssp", "model", "location")] <- NA
+#'@export
+add_ids.climate <- function(df,
+                            format) {
+
+  if(format == "stn name"){
+    .add_ids_func(func = tidyr::separate_wider_regex,
+                  df = df,
+                  col = "file_name",
+                  names = "stncode",
+                  patterns = "^[[:upper:]]|(?<=_)[[:upper:]]")
   }
-
-  cols <- c("stn_code",
-            "model",
-            "ssp",
-            "ian")
-
-  return(df |>
-           relocate(all_of(cols)))
+  else{
+    names <- get_ids(format)
+    .add_ids_func(func = tidyr::separate_wider_delim,
+                 df = df,
+                 col = "file_name",
+                 names = names,
+                 delim = "_") |>
+      dplyr::relocate(all_of(names))
+  }
 }
 
-.add_ids_func <- function(func, df, names,...){
+.add_ids_func <- function(func,
+                          df,
+                          col,
+                          names,
+                          ...){
 
   args <- list(...)
   old_class <- class(df)
@@ -60,7 +55,7 @@ add_ids.climate <- function(df) {
 
   func_args <- list(
     data = unclass_df,
-    cols = "file_name",
+    cols = col,
     names = names,
     cols_remove = FALSE,
     too_few = "align_start",
@@ -68,11 +63,34 @@ add_ids.climate <- function(df) {
   )
 
   if ("delim" %in% names(args)) {
-    func_args$delim <- args[["delim"]]
+    func_args['delim'] <- args[["delim"]]
   } else {
-    func_args$patterns <- args[["patterns"]]
+    func_args['patterns'] <- args[["patterns"]]
   }
 
   return(rlang::exec(func, !!!func_args) |>
            structure(class = old_class))
+}
+
+#'@export
+set_ids <- function(name,
+                    format){
+
+  ids <- get_ids(format)
+
+  stringr::str_split(name, "_") |>
+    unlist() |>
+    purrr::set_names(ids) |>
+    as.list()
+}
+
+#'@export
+get_ids <- function(format){
+
+  names <- stringr::str_split(format, "_") |> unlist()
+  if("year" %in% tolower(names)){
+    names[grep("year", names, TRUE)] <- "ian"
+  }
+
+  names
 }

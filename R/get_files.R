@@ -76,7 +76,7 @@
 
   if(!is.null(args[["group"]])){
     new_sim_list <- regroup_df_list(sims, by = args[["group"]]) |>
-      lapply(as.data.table) |>
+      lapply(data.table::as.data.table) |>
       lapply(.restore_attrs, sims[[1]], c("data.table", "data.frame"))
     sims <- new_sim_list
   }
@@ -85,7 +85,7 @@
     sims
   } else if (args[["return_type"]] == 1){
     purrr::list_rbind(sims) |>
-             as.data.table()
+      data.table::as.data.table()
   }
 }
 
@@ -230,19 +230,19 @@ get_climate_files <- function(name_format = "stn name",
                             "VP",
                             "CO2")
     ) |>
-      as.data.table() |>
+      data.table::as.data.table() |>
       as.climate() |>
       add_ids(name_format)
 
   }) |>
     as.climate() |>
-    set_names(names)
+    purrr::set_names(names)
 
   if (return_type == 0){
     climate_data
   } else if (return_type == 1){
     purrr::list_rbind(climate_data) |>
-      as.data.table() |>
+      data.table::as.data.table() |>
       as.climate()
   }
 }
