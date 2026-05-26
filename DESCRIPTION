@@ -1,7 +1,7 @@
 Package: STICSDataTools
 Type: Package
 Title: A package for STICS simulation data manipulation and plot generation
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person(
       "Mariaelisa", "Polsinelli",

@@ -12,7 +12,7 @@ join_dfs <- function(df_list,
 #'@export
 df_to_list <- function(df, by = "file_name") {
 
-  tbl_df <- as_tibble(df)
+  tbl_df <- dplyr::as_tibble(df)
 
   if (length(by) > 1) {
     vars <- tbl_df[by] |> lapply(unique)
