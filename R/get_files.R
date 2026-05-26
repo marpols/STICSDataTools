@@ -28,7 +28,7 @@
   }
 
   exp_dir <- args[['exp_dir']]
-  exp_ids <- .set_ids(exp_dir, args[['exp_name_format']])
+  exp_ids <- set_ids(exp_dir, args[['exp_name_format']])
 
   exp_files <- list.files(file.path(args[['js_path']],
                                     args[['ws']],
@@ -62,14 +62,26 @@
 
   }
   tryCatch({
+    pb_id <- cli::cli_progress_bar(name = "Loading simulations",
+                                   total = length(exp_files),
+                                   format_done = paste0(
+                                     "{.green {cli::symbol$tick}} Read {cli::pb_total} usms ",
+                                     "in {cli::pb_elapsed}."),
+                                   clear = FALSE
+                                   )
+
     sims <- purrr::map2(exp_files, names, \(f, name) {
       if (args[["type"]] == "mod_s") {
         read_mod_s(f, name)
       } else if (args[["type"]] == "mod_b") {
         read_mod_b(f)
       }
+      cli::cli_progress_update(id = pb_id)
     }) |>
       purrr::set_names(names)
+
+    cli::cli_progress_done(id = pb_id)
+
   }, error = function(e){
       return(NA)
   })
@@ -113,8 +125,8 @@ get_mod_s <- function(exp_dir,
                       dir = "RESULTS",
                       usm_list = "",
                       ver_num = NULL,
-                      stncode = "",
-                      soilcode = "",
+                      stn_code = "",
+                      soil_code = "",
                       ssp = "",
                       group = NULL,
                       return_type = 0) {
