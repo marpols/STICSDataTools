@@ -121,7 +121,7 @@ get_mod_s <- function(exp_dir,
 
   files <- .get_files(
     exp_dir = exp_dir,
-    exp_name_format = exp_folder_format,
+    exp_name_format = exp_name_format,
     usm_name_format = usm_name_format,
     js_path = js_path,
     ws = ws,
@@ -169,23 +169,22 @@ get_mod_b <- function(exp_dir,
                       soil_code = "",
                       ssp = "",
                       group = "",
-                      type = "mod_b",
                       return_type = 0) {
 
   files <- .get_files(
+    exp_dir = exp_dir,
+    exp_name_format = exp_name_format,
+    usm_name_format = usm_name_format,
     js_path = js_path,
     ws = ws,
     dir = dir,
     usm_list = usm_list,
-    exp_id = exp_id,
-    run_id = run_id,
     ver_num = ver_num,
     stn_code = stn_code,
     soil_code = soil_code,
     ssp = ssp,
     group = group,
     type = "mod_b",
-    projections = projections,
     return_type = return_type
   ) |>
     as.cropr()
