@@ -19,11 +19,16 @@
       add_ids(args[['usm_name_format']]) |>
       as.cropr()
 
+    cli::cli_progress_update(id = pb_id)
+
     return(mod_file)
   }
 
   read_mod_b <- function(f){
     mod_file <- readLines(f)
+
+    cli::cli_progress_update(id = pb_id)
+
     return(mod_file)
   }
 
@@ -76,12 +81,8 @@
       } else if (args[["type"]] == "mod_b") {
         read_mod_b(f)
       }
-      cli::cli_progress_update(id = pb_id)
     }) |>
       purrr::set_names(names)
-
-    cli::cli_progress_done(id = pb_id)
-
   }, error = function(e){
       return(NA)
   })
