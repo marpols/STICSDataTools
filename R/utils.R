@@ -1,7 +1,7 @@
 #'@export
 join_dfs <- function(df_list,
                      by = c("file_name", "ian", "jul")) {
-  df_list |> purrr::reduce(left_join,
+  df_list |> purrr::reduce(dplyr::left_join,
                           by = by,
                           suffix = c("", ".y"),
                           keep = FALSE) |>
