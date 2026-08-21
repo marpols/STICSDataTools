@@ -25,7 +25,7 @@ df_list_to_df.list <- function(df_list){
 df_list_to_df.cropr_simulation <- function(df_list){
   tryCatch({
     class(df_list) <- c("list")
-    dplyr::bind_rows(simulations,.id = "file_name") |>
+    dplyr::bind_rows(df_list,.id = "file_name") |>
       mutate(
         ian  = lubridate::year(Date),
         mo = lubridate::month(Date),
