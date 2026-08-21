@@ -1,9 +1,12 @@
-#'@export
+#' Add IDs
+#'
+#' @export
 add_ids <- function(df,
                     format){
   UseMethod("add_ids")
 }
 
+#' @method add_ids climate
 #' @export
 add_ids.climate <- function(df,
                             format) {
@@ -26,6 +29,7 @@ add_ids.climate <- function(df,
   }
 }
 
+#' @method add_ids default
 #' @export
 add_ids.default <- function(df,
                             format){
