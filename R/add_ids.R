@@ -5,6 +5,28 @@ add_ids <- function(df,
 }
 
 #' @export
+add_ids.climate <- function(df,
+                            format) {
+
+  if(format == "stn name"){
+    .add_ids_func(func = tidyr::separate_wider_regex,
+                  df = df,
+                  col = "file_name",
+                  names = "stncode",
+                  patterns = "^[[:upper:]]|(?<=_)[[:upper:]]")
+  }
+  else{
+    names <- get_ids(format)
+    .add_ids_func(func = tidyr::separate_wider_delim,
+                  df = df,
+                  col = "file_name",
+                  names = names,
+                  delim = "_") |>
+      dplyr::relocate(all_of(names))
+  }
+}
+
+#' @export
 add_ids.default <- function(df,
                             format){
 
@@ -25,27 +47,7 @@ add_ids.default <- function(df,
 
 }
 
-#' @export
-add_ids.climate <- function(df,
-                            format) {
 
-  if(format == "stn name"){
-    .add_ids_func(func = tidyr::separate_wider_regex,
-                  df = df,
-                  col = "file_name",
-                  names = "stncode",
-                  patterns = "^[[:upper:]]|(?<=_)[[:upper:]]")
-  }
-  else{
-    names <- get_ids(format)
-    .add_ids_func(func = tidyr::separate_wider_delim,
-                 df = df,
-                 col = "file_name",
-                 names = names,
-                 delim = "_") |>
-      dplyr::relocate(all_of(names))
-  }
-}
 
 .add_ids_func <- function(func,
                           df,
