@@ -1,4 +1,4 @@
-Package: STICSDataTools
+Package: STICSdt
 Type: Package
 Title: A package for STICS simulation data manipulation and plot generation
 Version: 0.1.1.1
@@ -10,7 +10,7 @@ Authors@R: c(
     )
   )
   #> [1] "Mariaelisa Polsinelli <mariaelisa.polsinelli@mail.mcgill.ca> [aut, cre] (ORCID: <https://orcid.org/0000-0002-6983-2759>)"
-Description: A package for STICS simulation data manipulation and plot generation. 
+Description: A personal package for STICS simulation data manipulation and plot generation. 
 	Includes functions to read and organize STICS simulation and climate file data, calculate basic statitics such as parameter means, sums, and maximum values.
 	Also includes functions to calculate GDD and some plotting options to explore data.
 License: MIT + file LICENSE
@@ -24,5 +24,6 @@ Imports:
     purrr,
 	rlang,
 	stringr,
-	tidyr
+	tidyr,
+	lubridate
 Config/roxygen2/version: 8.0.0

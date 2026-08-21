@@ -51,6 +51,7 @@ plot_climate <- function(dataset,
 
   plot
 }
+
 #'@export
 plot_climate2 <- function(dataset,
                                 hist_avg = numeric(),

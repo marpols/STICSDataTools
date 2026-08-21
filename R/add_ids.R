@@ -4,24 +4,28 @@ add_ids <- function(df,
   UseMethod("add_ids")
 }
 
-#'@export
+#' @export
 add_ids.default <- function(df,
                             format){
 
   names <- get_ids(format)
+
+  if("ian" %in% names(df)){
+    names[names == "ian"] <- NA_character_
+  }
 
   .add_ids_func(func = tidyr::separate_wider_delim,
                       df = df,
                       col = 'file_name',
                       delim = "_",
                       names = names) |>
-    dplyr::relocate(all_of(names)) |>
-    dplyr::relocate("ian", .before = "mo") |>
-    dplyr::mutate(across("ian", as.integer))
+    dplyr::relocate(all_of(names[!is.na(names)])) |>
+    dplyr::relocate(dplyr::any_of("ian"), .before = "mo") |>
+    dplyr::mutate(across(dplyr::any_of("ian"), as.integer))
 
 }
 
-#'@export
+#' @export
 add_ids.climate <- function(df,
                             format) {
 
@@ -72,7 +76,7 @@ add_ids.climate <- function(df,
            structure(class = old_class))
 }
 
-#'@export
+#' @export
 set_ids <- function(name,
                     format){
 
@@ -84,7 +88,7 @@ set_ids <- function(name,
     as.list()
 }
 
-#'@export
+#' @export
 get_ids <- function(format){
 
   names <- stringr::str_split(format, "_") |> unlist()
