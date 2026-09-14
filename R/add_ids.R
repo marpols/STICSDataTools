@@ -44,10 +44,14 @@ add_ids.default <- function(df,
                       df = df,
                       col = 'file_name',
                       delim = "_",
-                      names = names) |>
+                      names = names) %>%
+    (\(x) if ("mo" %in% names(df))
     dplyr::relocate(all_of(names[!is.na(names)])) |>
     dplyr::relocate(dplyr::any_of("ian"), .before = "mo") |>
     dplyr::mutate(across(dplyr::any_of("ian"), as.integer))
+    else
+      dplyr::relocate(all_of(names[!is.na(names)]))
+    )
 
 }
 

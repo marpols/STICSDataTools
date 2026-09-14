@@ -14,7 +14,7 @@ plot_style <- function(plot,
                        hjust = 1
 ){
   plot +
-    theme(
+    ggplot2::theme(
       plot.title = element_text(size = plot_fs),
       axis.title.x = element_text(size = x_axis),
       axis.title.y = element_text(size = y_axis),
@@ -34,7 +34,7 @@ plot_labels <- function(plot,
                         axis_title_y = "",
                         ...){
   plot +
-    labs(title = title,
+    ggplot2::labs(title = title,
       x = axis_title_x,
       y = axis_title_y,
       ...
@@ -51,7 +51,14 @@ remove_legend <- function(plot,
               alpha = "none")
   args <- match.arg(type, several.ok = TRUE)
 
-  plot + guides(lookup[args])
+  plot + ggplot2::guides(lookup[args])
+}
+
+plot_colour <- function(plot,
+                        colour_values = c(ARY="#33A02C",
+                                          CTW="#CAB2D6",
+                                          CLO="#FDBF6F")){
+  plot + ggplot2::scale_color_manual(values = color_values)
 }
 
 

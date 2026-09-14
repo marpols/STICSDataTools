@@ -64,6 +64,25 @@ expand_date <- function(df){
   stringr::str_split(format, "_") |> unlist()
 }
 
+df_subset <- function(df,
+                      by,
+                      op = "&"){
+
+  if(!data.table::is.data.table(df)){
+    df <- as.data.table(df)
+  }
+
+  attrs <- class(df)
+
+  op <- sprintf(" %s ", op)
+
+  exprs <- paste(by, collapse = " & ")
+
+  newdf <- df[eval(str2lang(exprs))]
+  class(newdf) <- class(attrs)
+  newdf
+}
+
 
 
 

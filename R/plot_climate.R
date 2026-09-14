@@ -18,7 +18,7 @@ plot_climate <- function(dataset,
   subset <- dataset |> dplyr::filter(!!!rlang::parse_exprs(filters))
   max <- max(subset[[variable]])
 
-  plot <- ggplot2::ggplot(subset, aes(x = .data[[x_axis]],
+  plot <- ggplot2::ggplot(subset, ggplot2::aes(x = .data[[x_axis]],
                               y = .data[[variable]],
                               fill = .data[[variable]])) +
     geom_col() +
@@ -87,13 +87,13 @@ plot_climate2 <- function(dataset,
                                   length.out = n_slices + 1)[-1])
     ) |>
     tidyr::unnest(c(y_bottom, y_top)) |>
-    mutate(
+    dplyr::mutate(
       fill_y = (y_bottom + y_top) / 2
     )
 
   ggplot2::ggplot(bar_slices) +
-    geom_rect(
-      aes(
+    ggplot2::geom_rect(
+      ggplot2::aes(
         xmin = x - 0.45,
         xmax = x + 0.45,
         ymin = y_bottom,
@@ -101,20 +101,20 @@ plot_climate2 <- function(dataset,
         fill = fill_y
       )
     ) +
-    scale_x_continuous(
+    ggplot2::scale_x_continuous(
       breaks = unique(bar_slices$x),
       labels = levels(factor(dataset[[x_axis]]))
     ) +
-    scale_y_continuous(limits = c(y_min, NA)) +
-    scale_fill_paletteer_c(palette)  +
-    geom_hline(yintercept = mid[[1,1]],
+    ggplot2::scale_y_continuous(limits = c(y_min, NA)) +
+    ggplot2::scale_fill_paletteer_c(palette)  +
+    ggplot2::geom_hline(yintercept = mid[[1,1]],
                linewidth = 0.8) +
-    labs(
+    ggplot2::labs(
       x = axis_title_x,
       y = axis_title_y,
       fill = legend_title
     ) +
-    theme_minimal()
+    ggplot2::theme_minimal()
 
 }
 

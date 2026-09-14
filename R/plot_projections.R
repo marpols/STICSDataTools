@@ -9,17 +9,17 @@ plot_projections <- function(dataset,
                              grid_rows = "ssp") {
 
 
-  ggplot2::ggplot(dataset, aes(x = .data[[x_axis]])) +
-    geom_line(aes(y = .data[[variable]],
+  ggplot2::ggplot(dataset, ggplot2::aes(x = .data[[x_axis]])) +
+    ggplot2::geom_line(ggplot2::aes(y = .data[[variable]],
                   color = model)) +
-    facet_grid(cols = vars(.data[[grid_cols]]),
-               rows = vars(.data[[grid_rows]])) +
-    labs(
+    ggplot2::facet_grid(cols = ggplot2::vars(.data[[grid_cols]]),
+               rows = ggplot2::vars(.data[[grid_rows]])) +
+    ggplot2::labs(
       title = title,
       x = axis_title_x,
       y = axis_title_y
     ) +
-    theme_minimal()
+    ggplot2::theme_minimal()
 
 }
 
@@ -54,16 +54,16 @@ plot_projections2 <- function(dataset,
 ){
   #plots projection data over time with se ribbons (method = loess)
 
-  ggplot2::ggplot(dataset, aes(x = ian)) +
-    geom_smooth(
-      aes(y = .data[[variable]],
+  ggplot2::ggplot(dataset, ggplot2::aes(x = ian)) +
+    ggplot2::geom_smooth(
+      ggplot2::aes(y = .data[[variable]],
           group = .data[[ribbon_group]],
           fill = .data[[fill_group]]),
       colour = NA,    # ribbon only
       alpha = 0.15
     ) +
-    geom_smooth(
-      aes(y = .data[[variable]],
+    ggplot2::geom_smooth(
+      ggplot2::aes(y = .data[[variable]],
           group = .data[[ribbon_group]],
           colour = .data[[fill_group]],
           linetype = .data[[ribbon_group]],
@@ -71,14 +71,14 @@ plot_projections2 <- function(dataset,
       se = FALSE,
       linewidth = 0.9
     ) +
-    facet_grid(cols = vars(.data[[fill_group]])) +
-    coord_cartesian(ylim = y_range) +
-    scale_fill_manual(values = fill_values) +
-    scale_color_manual(values = color_values) +
-    scale_linetype_manual(values = linetype_values,
+    ggplot2::facet_grid(cols = ggplot2::vars(.data[[fill_group]])) +
+    ggplot2::coord_cartesian(ylim = y_range) +
+    ggplot2::scale_fill_manual(values = fill_values) +
+    ggplot2::scale_color_manual(values = color_values) +
+    ggplot2::scale_linetype_manual(values = linetype_values,
                           labels = line_labels) +
-    scale_alpha_manual(values = fill_alphas) +
-    guides(alpha = "none",
+    ggplot2::scale_alpha_manual(values = fill_alphas) +
+    ggplot2:: guides(alpha = "none",
            fill = "none",
            color = "none",
            linetype = guide_legend(
@@ -86,11 +86,11 @@ plot_projections2 <- function(dataset,
                fill = NA,
                colour = "#000000"
              ))) +
-    labs(title = title,
+    ggplot2::labs(title = title,
          subtitle = subtitle,
          x = axis_title_x,
          y = axis_title_y,
          linetype = ribbon_group) +
-    theme_minimal()
+    ggplot2::theme_minimal()
 
 }
