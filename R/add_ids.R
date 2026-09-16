@@ -1,5 +1,7 @@
 #' Add IDs
 #'
+#' @param df A data frame.
+#' @param format file name format.
 #' @export
 add_ids <- function(df,
                     format){
@@ -12,11 +14,14 @@ add_ids.climate <- function(df,
                             format) {
 
   if(format == "stn name"){
-    .add_ids_func(func = tidyr::separate_wider_regex,
-                  df = df,
-                  col = "file_name",
-                  names = "stncode",
-                  patterns = "^[[:upper:]]|(?<=_)[[:upper:]]")
+    df |>
+      dplyr::mutate(
+        stncode = stringr::str_replace(
+          file_name,
+          "^([[:upper:]])[^_]*_([[:upper:]]).*$",
+          "\\1\\2"
+        )
+      )
   }
   else{
     names <- get_ids(format)
@@ -60,7 +65,6 @@ add_ids.default <- function(df,
 .add_ids_func <- function(func,
                           df,
                           col,
-                          names,
                           ...){
 
   args <- list(...)
@@ -70,20 +74,21 @@ add_ids.default <- function(df,
   func_args <- list(
     data = unclass_df,
     cols = col,
-    names = names,
     cols_remove = FALSE,
     too_few = "align_start",
     names_repair = "minimal"
   )
 
   if ("delim" %in% names(args)) {
-    func_args['delim'] <- args[["delim"]]
+    func_args[['names']] <- args[["names"]]
+    func_args[['delim']] <- args[["delim"]]
   } else {
-    func_args['patterns'] <- args[["patterns"]]
+    func_args[['patterns']] <- args[["patterns"]] |>
+                                    stats::setNames("stncode")
   }
 
-  return(rlang::exec(func, !!!func_args) |>
-           structure(class = old_class))
+  rlang::exec(func, !!!func_args) |>
+           structure(class = old_class)
 }
 
 #' @export

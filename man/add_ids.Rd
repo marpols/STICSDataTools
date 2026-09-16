@@ -6,6 +6,11 @@
 \usage{
 add_ids(df, format)
 }
+\arguments{
+\item{df}{A data frame.}
+
+\item{format}{file name format.}
+}
 \description{
 Add IDs
 }

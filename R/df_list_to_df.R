@@ -24,7 +24,7 @@ df_list_to_df.cropr_simulation <- function(df_list){
   })
 }
 
-#' @method  df_list_to_df list
+#' @method  df_list_to_df default
 #' @export
 df_list_to_df.default <- function(df_list){
   tryCatch({

@@ -2,7 +2,18 @@
 #'
 #'`.get_files` returns a data.table or a list of data.tables of STICS simulations
 #'
-#' @param ...
+#' @param exp_name_format (string) format of experiment name
+#' @param usm_name_format (string) file name format
+#' @param js_path (string) path to STICS javascript directory
+#' @param ws (string) path to workspace
+#' @param dir (string) name of mod_s file directory
+#' @param usm_list (char) list of usms names
+#' @param ver_num (numeric)(optional) version number
+#' @param stncode (string)(optional) weather station code id
+#' @param soilcode (string)(optional) soil code id
+#' @param ssp (string)(optional) ssp
+#' @param group (string)(optional) variables to group by if returning list
+#' @param return_type 0 = list 1 = data.frame
 #'
 #' @returns a data.table or a list of named data.tables of each usm.
 .get_files <- function(...) {

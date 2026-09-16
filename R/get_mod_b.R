@@ -1,18 +1,18 @@
-#' @param exp_dir
+#' get mod b files
 #'
-#' @param exp_name_format
-#' @param usm_name_format
-#' @param js_path
-#' @param ws
-#' @param dir
-#' @param usm_list
-#' @param ver_num
-#' @param stn_code
-#' @param soil_code
-#' @param ssp
-#' @param group
-#' @param type
-#' @param return_type
+#' @param exp_dir (string) name of directory where mod b files are stored
+#' @param exp_name_format (string) format of experiment name
+#' @param usm_name_format (string) file name format
+#' @param js_path (string) path to STICS javascript directory
+#' @param ws (string) path to workspace
+#' @param dir (string) name of directory where results are stored
+#' @param usm_list (char) list of usms names
+#' @param ver_num (numeric)(optional) version number
+#' @param stncode (string)(optional) weather station code id
+#' @param soilcode (string)(optional) soil code id
+#' @param ssp (string)(optional) ssp
+#' @param group (string)(optional) variables to group by if returning list
+#' @param return_type 0 = list 1 = data.frame
 #'
 #'@export
 get_mod_b <- function(exp_dir,
@@ -23,7 +23,7 @@ get_mod_b <- function(exp_dir,
                       dir = "RESULTS",
                       usm_list = "",
                       ver_num = NULL,
-                      stn_code = "",
+                      stncode = "",
                       soil_code = "",
                       ssp = "",
                       group = "",
@@ -38,7 +38,7 @@ get_mod_b <- function(exp_dir,
     dir = dir,
     usm_list = usm_list,
     ver_num = ver_num,
-    stn_code = stn_code,
+    stncode = stncode,
     soil_code = soil_code,
     ssp = ssp,
     group = group,

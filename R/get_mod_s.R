@@ -1,17 +1,18 @@
-#' @param exp_dir
+#' get mod s files
 #'
-#' @param exp_name_format
-#' @param usm_name_format
-#' @param js_path
-#' @param ws
-#' @param dir
-#' @param usm_list
-#' @param ver_num
-#' @param stncode
-#' @param soilcode
-#' @param ssp
-#' @param group
-#' @param return_type
+#' @param exp_dir (string) name of directory where mod s files are stored
+#' @param exp_name_format (string) format of experiment name
+#' @param usm_name_format (string) file name format
+#' @param js_path (string) path to STICS javascript directory
+#' @param ws (string) path to workspace
+#' @param dir (string) name of mod_s file directory
+#' @param usm_list (char) list of usms names
+#' @param ver_num (numeric)(optional) version number
+#' @param stncode (string)(optional) weather station code id
+#' @param soilcode (string)(optional) soil code id
+#' @param ssp (string)(optional) ssp
+#' @param group (string)(optional) variables to group by if returning list
+#' @param return_type 0 = list 1 = data.frame
 #'
 #'@export
 get_mod_s <- function(exp_dir,
