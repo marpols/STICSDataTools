@@ -1,11 +1,11 @@
 #' get mod s files
 #'
-#' @param exp_dir (string) name of directory where mod s files are stored
+#' @param exp_dir (string) name of directory where experiment files are stored
 #' @param exp_name_format (string) format of experiment name
 #' @param usm_name_format (string) file name format
 #' @param js_path (string) path to STICS javascript directory
 #' @param ws (string) path to workspace
-#' @param dir (string) name of mod_s file directory
+#' @param dir (string) name of directory where results are stored (exp_dir parent folder)
 #' @param usm_list (char) list of usms names
 #' @param ver_num (numeric)(optional) version number
 #' @param stncode (string)(optional) weather station code id
@@ -21,11 +21,11 @@ get_mod_s <- function(exp_dir,
                       js_path = javastics_path,
                       ws = workspace,
                       dir = "RESULTS",
-                      usm_list = "",
+                      usm_list = character(),
                       ver_num = NULL,
-                      stn_code = "",
-                      soil_code = "",
-                      ssp = "",
+                      stn_code = character(),
+                      soil_code = character(),
+                      ssp = character(),
                       group = NULL,
                       return_type = 0) {
 

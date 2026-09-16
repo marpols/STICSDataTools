@@ -7,6 +7,8 @@
 .get_files(...)
 }
 \arguments{
+\item{exp_dir}{(string) name of directory where experiment files are stored}
+
 \item{exp_name_format}{(string) format of experiment name}
 
 \item{usm_name_format}{(string) file name format}
@@ -15,7 +17,7 @@
 
 \item{ws}{(string) path to workspace}
 
-\item{dir}{(string) name of mod_s file directory}
+\item{dir}{(string) name of directory where results are stored (exp_dir parent folder)}
 
 \item{usm_list}{(char) list of usms names}
 

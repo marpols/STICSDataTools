@@ -45,18 +45,25 @@ add_ids.default <- function(df,
     names[names == "ian"] <- NA_character_
   }
 
-  .add_ids_func(func = tidyr::separate_wider_delim,
-                      df = df,
-                      col = 'file_name',
-                      delim = "_",
-                      names = names) %>%
-    (\(x) if ("mo" %in% names(df))
-    dplyr::relocate(all_of(names[!is.na(names)])) |>
-    dplyr::relocate(dplyr::any_of("ian"), .before = "mo") |>
-    dplyr::mutate(across(dplyr::any_of("ian"), as.integer))
-    else
-      dplyr::relocate(all_of(names[!is.na(names)]))
-    )
+  result <- .add_ids_func(
+    func = tidyr::separate_wider_delim,
+    df = df,
+    col = "file_name",
+    delim = "_",
+    names = names
+  ) |>
+    dplyr::relocate(dplyr::all_of(names[!is.na(names)]))
+
+
+  if ("mo" %in% names(result)) {
+    result <- result |>
+      dplyr::relocate(dplyr::any_of("ian"), .before = "mo") |>
+      dplyr::mutate(
+        dplyr::across(dplyr::any_of("ian"), as.integer)
+      )
+  }
+
+  result
 
 }
 

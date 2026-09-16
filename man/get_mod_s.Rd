@@ -11,17 +11,17 @@ get_mod_s(
   js_path = javastics_path,
   ws = workspace,
   dir = "RESULTS",
-  usm_list = "",
+  usm_list = character(),
   ver_num = NULL,
-  stn_code = "",
-  soil_code = "",
-  ssp = "",
+  stn_code = character(),
+  soil_code = character(),
+  ssp = character(),
   group = NULL,
   return_type = 0
 )
 }
 \arguments{
-\item{exp_dir}{(string) name of directory where mod s files are stored}
+\item{exp_dir}{(string) name of directory where experiment files are stored}
 
 \item{exp_name_format}{(string) format of experiment name}
 
@@ -31,7 +31,7 @@ get_mod_s(
 
 \item{ws}{(string) path to workspace}
 
-\item{dir}{(string) name of mod_s file directory}
+\item{dir}{(string) name of directory where results are stored (exp_dir parent folder)}
 
 \item{usm_list}{(char) list of usms names}
 
