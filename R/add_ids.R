@@ -76,7 +76,12 @@ add_ids.default <- function(df,
 
   args <- list(...)
   old_class <- class(df)
-  unclass_df <- as.data.frame(unclass(df))
+  unclass_df <- as.data.frame(unclass(df),
+                              optional = TRUE)
+
+  names(unclass_df) <- names(unclass_df) |>
+    stringr::str_replace_all("\\(", "_") |>
+    stringr::str_remove_all("\\)")
 
   func_args <- list(
     data = unclass_df,

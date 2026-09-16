@@ -29,7 +29,8 @@
   read_mod_s <- function(f, name) {
 
     mod_file <- data.table::fread(f, sep = ";",
-                                  stringsAsFactors = FALSE) |>
+                                  stringsAsFactors = FALSE,
+                                  check.names = FALSE) |>
       dplyr::mutate(file_name = name,
              ian = NULL,
              !!!exp_ids) |>
