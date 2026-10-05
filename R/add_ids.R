@@ -16,10 +16,11 @@ add_ids.climate <- function(df,
   if(format == "stn name"){
     df |>
       dplyr::mutate(
-        stncode = stringr::str_replace(
-          file_name,
-          "^([[:upper:]])[^_]*_([[:upper:]]).*$",
-          "\\1\\2"
+        stncode = vapply(
+          stringr::str_extract_all(station, "^[A-Za-z]|(?<=_)[A-Za-z]"),
+          paste0,
+          collapse = "",
+          FUN.VALUE = character(1)
         )
       )
   }
