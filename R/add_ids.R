@@ -17,7 +17,7 @@ add_ids.climate <- function(df,
     df |>
       dplyr::mutate(
         stncode = vapply(
-          stringr::str_extract_all(station, "^[A-Za-z]|(?<=_)[A-Za-z]"),
+          stringr::str_extract_all(file_name, "^[A-Za-z]|(?<=_)[A-Za-z]"),
           paste0,
           collapse = "",
           FUN.VALUE = character(1)
