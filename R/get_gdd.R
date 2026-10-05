@@ -35,8 +35,8 @@ get_gdd <- function(df_list,
                     negatives = FALSE,
                     return_type = 0) {
 
-  get_data(
-    calc_gdd,
+  .get_data(
+    .calc_gdd,
     df_list,
     return_type,
     base = base,
