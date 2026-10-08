@@ -14,9 +14,15 @@ df_to_list <- function(df, by = "file_name") {
     names <- unique(df[[by]])
   }
   tryCatch({
-    df |> dplyr::group_split(across(all_of(by))) |>
+    result <- df |> dplyr::group_split(across(all_of(by))) |>
       purrr::set_names(names) |>
-      "class<-"(org_class)
+      purrr::map(\(x) {
+        x <- data.table::as.data.table(x)
+        class(x) <- org_class
+        x
+      })
+
+    return(result)
 
   }, error = function(e){
     if (grepl("must be a list", e$message)) {

@@ -13,11 +13,6 @@
 #' @param stncode (string)(optional) weather station code id
 #' @param soilcode (string)(optional) soil code id
 #' @param ssp (string)(optional) ssp
-#' @param usm_list (char) list of usms names
-#' @param ver_num (numeric)(optional) version number
-#' @param stncode (string)(optional) weather station code id
-#' @param soilcode (string)(optional) soil code id
-#' @param ssp (string)(optional) ssp
 #' @param group (string)(optional) variables to group by if returning list
 #' @param return_type 0 = list 1 = data.frame
 #'

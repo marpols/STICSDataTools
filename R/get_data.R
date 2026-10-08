@@ -19,11 +19,11 @@
     .restore_attrs(df_list, "list")
 
   if(return_type == 0){
-    return(file_list)
+    file_list
   } else if (return_type == 1){
-    return(purrr::list_rbind(file_list) |>
+    purrr::list_rbind(file_list) |>
              data.table::as.data.table() |>
-             .restore_attrs(df_list, "list"))
+             .restore_attrs(df_list, "list")
   }
 }
 
@@ -32,7 +32,10 @@
                               return_type = 1,
                               ...){
   args <- list(...)
-  summary <- do.call(func, c(list(df), args))
+  funcargs <- formalArgs(func)
+
+  summary <- do.call(func, c(list(df), args[names(args) %in% funcargs]))
+  x <<- summary
   if(return_type == 0){
     tryCatch({
       return(df_to_list(summary, by = args[["by"]]) |>

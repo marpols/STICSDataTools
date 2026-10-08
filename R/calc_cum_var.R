@@ -14,15 +14,15 @@
 
   tryCatch({
     df <- if(monthly){ df[mo %in% mo_range,] } else {df} |>
-      mutate({{col_name}} := cumsum(.data[[var]]),
-             .by = all_of(group)) |>
-      ungroup()
+      dplyr::mutate(!!col_name := cumsum(.data[[var]]),
+             .by = dplyr::all_of(group))
+
   }, error = function(msg) {
     message("Variable not found. Ensure name and case matches column headings.")
     message(msg$message)
     return(NA)
   })
 
-  return(df)
+  df
 
 }

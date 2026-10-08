@@ -19,14 +19,14 @@ calc_clim_index <- function(df,
 
   allowed_args <- switch(
     index,
-    "R1mm" = c("prcp_col", "threshold"),
-    "R10mm" = c("prcp_col", "threshold"),
-    "R20mm" = c("prcp_col", "threshold"),
-    "CWD" = c("prcp_col", "wet_threshold"),
-    "CDD" = c("prcp_col", "dry_threshold"),
-    "TX30" = c("tmax_col"),
-    "TX35" = c("tmax_col"),
-    "TXx" = c("tmax_col, threshold")
+    "R1mm" = c("prcp_col", "time_col", "threshold"),
+    "R10mm" = c("prcp_col", "time_col", "threshold"),
+    "R20mm" = c("prcp_col", "time_col", "threshold"),
+    "CWD" = c("prcp_col", "time_col", "wet_threshold"),
+    "CDD" = c("prcp_col", "time_col", "dry_threshold"),
+    "TX30" = c("tmax_col", "time_col"),
+    "TX35" = c("tmax_col",  "time_col"),
+    "TXx" = c("tmax_col", "time_col", "threshold")
   )
 
   args <- list(...)
@@ -39,6 +39,8 @@ calc_clim_index <- function(df,
 
   if (!"Date" %in% names(df)) {
     df$Date <- lubridate::make_date(df$ian, df$mo, df$jo)
+  } else {
+    df$Date <- df[["time_col"]]
   }
 
   tryCatch({
