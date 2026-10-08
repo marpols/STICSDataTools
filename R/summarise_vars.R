@@ -23,13 +23,18 @@ summarise_vars <- function(df_list,
                  "sum mean" = args[["mean_by"]],
                  "max" = args[["by"]])}()
 
-  df <- df_list_to_df(df_list)
+  df <- if("list" %in% class(df_list)){
+    df_list_to_df(df_list)
+  } else {
+    df_list
+  }
+  x <- c(list(df_list = df, var = var_list[[1]]), args)
 
-  new_df <- lapply(var_list, function(var){
-    do.call(func, c(list(df_list, var), args))
+  new_df <- lapply(var_list, function(v) {
+    do.call(func, c(list(df_list = df, var = v), args))
   }) |>
     purrr::list_flatten(name_repair = "unique_quiet") |>
-    join_dfs(by)
+    join_dfs(by = by)
 
   return(new_df)
 

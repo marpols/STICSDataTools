@@ -1,6 +1,6 @@
 .get_data <- function(df_list,
                       func,
-                      return_type = NULL,
+                      return_type = 0,
                       ...) {
   UseMethod(".get_data")
 }
@@ -11,11 +11,12 @@
                      ...){
 
   args <- list(...)
+
   # return_type <- match.args(return_type)
   file_list <- lapply(df_list, function(df){
-    return(do.call(func, c(list(df), args)))
+    return(do.call(func, c(list(df_list), args)))
   }) |>
-    set_names(names(df_list)) |>
+    purrr::set_names(names(df_list)) |>
     .restore_attrs(df_list, "list")
 
   if(return_type == 0){
@@ -32,10 +33,9 @@
                               return_type = 1,
                               ...){
   args <- list(...)
-  funcargs <- formalArgs(func)
+  # funcargs <- formalArgs(func)
 
-  summary <- do.call(func, c(list(df), args[names(args) %in% funcargs]))
-  x <<- summary
+  summary <- do.call(func, c(list(df), args))
   if(return_type == 0){
     tryCatch({
       return(df_to_list(summary, by = args[["by"]]) |>

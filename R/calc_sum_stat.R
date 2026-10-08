@@ -24,13 +24,13 @@
 
   tryCatch({
     df_sum <- if(monthly){ df[mo %in% mo_range,] } else {df} |>
-      summarise({{col_name}} := func(.data[[var]]),
+      dplyr::summarise({{col_name}} := func(.data[[var]]),
                 .by = all_of(by))
+    return(df_sum)
 
-  }, error = function(msg) {
+  }, error = function(e) {
     message("Variable not found. Ensure name and case matches column headings.")
-    return(NA)
+    return(e)
   })
 
-  return(df_sum)
 }
