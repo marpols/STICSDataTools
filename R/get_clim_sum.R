@@ -4,7 +4,7 @@
 get_clim_sum <- function(df,
                          mo_range = 1:12,
                          by = c("stncode", "ian"),
-                         fname_format = "stn code"){
+                         fname_format = "stn name"){
 
   df_sums <- .calc_clim_sums(df = df,
                             mo_range = mo_range,
@@ -56,6 +56,7 @@ get_clim_sum.projections <- function(df,
   mo_range <- args[["mo_range"]]
   by <- args[["by"]]
 
+  old_class <- class(df)
 
   if (!is.data.frame(df)) {
     df <- df_list_to_df(df)
@@ -76,7 +77,7 @@ get_clim_sum.projections <- function(df,
       GDD_cum = sum(GDD, na.rm = TRUE),
       .by = sum_by) |>
     {\(x) structure(x,
-                    class = class(df),
+                    class = old_class,
                     source = "STICS",
                     file_type = "summary")}()
 
