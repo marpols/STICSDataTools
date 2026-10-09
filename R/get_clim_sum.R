@@ -1,13 +1,16 @@
+.datatable.aware <- TRUE
+
 #'@export
 get_clim_sum <- function(df,
-                                 mo_range = 1:12,
-                                 by = c("stncode", "ian")){
+                         mo_range = 1:12,
+                         by = c("stncode", "ian"),
+                         fname_format = "stn code"){
 
   df_sums <- .calc_clim_sums(df = df,
                             mo_range = mo_range,
                             by = by) |>
-    add_ids() |>
-    summarise(Precipitation_cum_avg = mean(Precipitation_cum),
+    add_ids(format = fname_format) |>
+    dplyr::summarise(Precipitation_cum_avg = mean(Precipitation_cum),
               GDD_cum_avg = mean(GDD_cum),
               .by = by)
 
@@ -63,15 +66,15 @@ get_clim_sum.projections <- function(df,
     df <- join_dfs(list(df, df_gdd))
   }
 
+  df <- data.table::as.data.table(df)
+
   sum_by <- c("ian", "file_name", if ("mo" %in% by) "mo")
 
-
-  df[mo %in% mo_range, ] |>
+    df[mo %in% mo_range, ] |>
     dplyr::summarise(
       Precipitation_cum = sum(Precipitation, na.rm = TRUE),
       GDD_cum = sum(GDD, na.rm = TRUE),
-      .by = sum_by
-    ) |>
+      .by = sum_by) |>
     {\(x) structure(x,
                     class = class(df),
                     source = "STICS",
