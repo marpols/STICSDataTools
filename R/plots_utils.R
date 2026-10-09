@@ -54,6 +54,7 @@ remove_legend <- function(plot,
   plot + ggplot2::guides(lookup[args])
 }
 
+#'@export
 plot_colour <- function(plot,
                         colour_values = c(ARY="#33A02C",
                                           CTW="#CAB2D6",

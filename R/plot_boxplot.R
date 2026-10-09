@@ -26,6 +26,7 @@ plot_boxplot <- function(dataset,
 
 }
 
+#'@export
 plot_boxplot_grid <- function(dataset,
                               variable,
                               x_axis = "stncode",
