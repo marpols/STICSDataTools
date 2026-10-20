@@ -21,12 +21,12 @@ plot_climate <- function(dataset,
   plot <- ggplot2::ggplot(subset, ggplot2::aes(x = .data[[x_axis]],
                               y = .data[[variable]],
                               fill = .data[[variable]])) +
-    geom_col() +
-    scale_fill_gradient2(color_values,
+    ggplot2::geom_col() +
+    ggplot2::scale_fill_gradient2(color_values,
                          midpoint = hist_avg) +
-    geom_hline(yintercept = mid,
+    ggplot2::geom_hline(yintercept = hist_avg,
                linewidth = 0.8) +
-    annotate("text",
+    ggplot2::annotate("text",
              x = min(.data[[x_axis]]),
              y = mid,
              label = line_label,
@@ -34,20 +34,20 @@ plot_climate <- function(dataset,
              vjust = -0.5,
              color = "black",
              size = 3) +
-    scale_x_continuous(breaks = seq(min(.data[[ian]]),
+    ggplot2::scale_x_continuous(breaks = seq(min(.data[[ian]]),
                                     max(.data[[ian]]),
                                     by = 1)) +
-    scale_y_continuous(breaks = seq(0,
+    ggplot2::scale_y_continuous(breaks = seq(0,
                                     ceiling(max / 100) * 100,
                                     by = 100)) +
-    coord_cartesian(ylim = c(y_min, NA)) +
-    labs(title = title,
+    ggplot2::coord_cartesian(ylim = c(y_min, NA)) +
+    ggplot2::labs(title = title,
          subtitle = subtitle,
          x = axis_title_x,
          y = axis_title_y,
          fill = "") +
-    guides(fill = "none") +
-    theme_minimal()
+    ggplot2::guides(fill = "none") +
+    ggplot2::theme_minimal()
 
   plot
 }

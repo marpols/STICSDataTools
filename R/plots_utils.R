@@ -15,13 +15,13 @@ plot_style <- function(plot,
 ){
   plot +
     ggplot2::theme(
-      plot.title = element_text(size = plot_fs),
-      axis.title.x = element_text(size = x_axis),
-      axis.title.y = element_text(size = y_axis),
-      axis.text = element_text(size = elements),
-      axis.text.x = element_text(angle = angle, hjust = hjust),
-      strip.text.x = element_text(size = grids),
-      legend.text = element_text(size = legend),
+      plot.title = ggplot2::element_text(size = plot_fs),
+      axis.title.x = ggplot2::element_text(size = x_axis),
+      axis.title.y = ggplot2::element_text(size = y_axis),
+      axis.text = ggplot2::element_text(size = elements),
+      axis.text.x = ggplot2::element_text(angle = angle, hjust = hjust),
+      strip.text.x = ggplot2::element_text(size = grids),
+      legend.text = ggplot2::element_text(size = legend),
       legend.position = legend_pos
     )
 
@@ -59,9 +59,16 @@ plot_colour <- function(plot,
                         colour_values = c(ARY="#33A02C",
                                           CTW="#CAB2D6",
                                           CLO="#FDBF6F")){
-  plot + ggplot2::scale_color_manual(values = color_values)
+  plot + ggplot2::scale_color_manual(values = colour_values)
 }
 
+#'@export
+plot_color <- function(plot,
+                        color_values = c(ARY="#33A02C",
+                                          CTW="#CAB2D6",
+                                          CLO="#FDBF6F")){
+  plot + ggplot2::scale_color_manual(values = color_values)
+}
 
 
 
