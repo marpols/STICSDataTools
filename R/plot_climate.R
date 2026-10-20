@@ -22,21 +22,29 @@ plot_climate <- function(dataset,
                               y = .data[[variable]],
                               fill = .data[[variable]])) +
     ggplot2::geom_col() +
-    ggplot2::scale_fill_gradient2(color_values,
-                         midpoint = hist_avg) +
+    ggplot2::scale_fill_gradient2(
+      low = color_values[["low"]],
+      mid = color_values[["mid"]],
+      high = color_values[["high"]],
+      midpoint = hist_avg
+    ) +
     ggplot2::geom_hline(yintercept = hist_avg,
                linewidth = 0.8) +
     ggplot2::annotate("text",
-             x = min(.data[[x_axis]]),
+             x = min(subset[[x_axis]], na.rm = TRUE),
              y = hist_avg,
              label = line_label,
              hjust = 0.4,
              vjust = -0.5,
              color = "black",
              size = 3) +
-    ggplot2::scale_x_continuous(breaks = seq(min(.data[[ian]]),
-                                    max(.data[[ian]]),
-                                    by = 1)) +
+    ggplot2::scale_x_continuous(
+      breaks = seq(
+        min(subset[[x_axis]], na.rm = TRUE),
+        max(subset[[x_axis]], na.rm = TRUE),
+        by = 1
+      )
+    ) +
     ggplot2::scale_y_continuous(breaks = seq(0,
                                     ceiling(max / 100) * 100,
                                     by = 100)) +
