@@ -28,7 +28,7 @@ plot_climate <- function(dataset,
                linewidth = 0.8) +
     ggplot2::annotate("text",
              x = min(.data[[x_axis]]),
-             y = mid,
+             y = hist_avg,
              label = line_label,
              hjust = 0.4,
              vjust = -0.5,
